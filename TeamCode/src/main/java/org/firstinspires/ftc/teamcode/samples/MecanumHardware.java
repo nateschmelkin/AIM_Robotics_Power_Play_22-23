@@ -1,15 +1,10 @@
 package org.firstinspires.ftc.teamcode.samples;
 
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class mecanumHardware {
+public class MecanumHardware {
 
     public HardwareMap hwMap = null;
     public DcMotorEx leftFront = null;
@@ -18,7 +13,7 @@ public class mecanumHardware {
     public DcMotorEx rightRear = null;
 
     /* Constructor */
-    public mecanumHardware() {
+    public MecanumHardware() {
 
     }
 

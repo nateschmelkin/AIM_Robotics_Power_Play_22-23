@@ -10,10 +10,10 @@ import java.lang.*;
 
 @TeleOp(name="mecanumDriveTester", group="Samples")
 
-public class mecanumDriveTester extends OpMode {
+public class MecanumDriveTester extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
-    mecanumHardware mecanumHardware = new mecanumHardware();
+    MecanumHardware mecanumHardware = new MecanumHardware();
     boolean mechanisms = true;
     double deadzone = .3;
     double maxSpeed = .8;
