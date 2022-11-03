@@ -16,11 +16,11 @@ public class Robot {
 
     public double triggerDeadzone = .3;
 
-    public SpinnerSubsystem spinner = new SpinnerSubsystem();
-    public LiftSubsystem lift = new LiftSubsystem();
-    public DrivebaseSubsystem drivebase = new DrivebaseSubsystem();
-    public ClawSubsystem claw = new ClawSubsystem();
-    public CameraSubsystem camera = new CameraSubsystem();
+    public SpinnerSubsystem spinner = null;
+    public LiftSubsystem lift = null;
+    public DrivebaseSubsystem drivebase = null;
+    public ClawSubsystem claw = null;
+    public CameraSubsystem camera = null;
 
     public enum coneStates{
         NONE,
@@ -30,8 +30,12 @@ public class Robot {
 
     public coneStates activeConeState = coneStates.NONE;
 
-    public Robot() {
-
+    public Robot(boolean isRed) {
+        spinner = new SpinnerSubsystem(isRed);
+        lift = new LiftSubsystem();
+        drivebase = new DrivebaseSubsystem();
+        claw = new ClawSubsystem();
+        camera = new CameraSubsystem();
     }
 
    public void init(HardwareMap ahwMap) {

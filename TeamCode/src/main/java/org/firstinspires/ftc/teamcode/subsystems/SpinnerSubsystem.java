@@ -6,8 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-import org.firstinspires.ftc.teamcode.hardware.Robot;
-
 public class SpinnerSubsystem extends RunToPositionMotor{
 
     public HardwareMap hwMap = null;
@@ -19,6 +17,12 @@ public class SpinnerSubsystem extends RunToPositionMotor{
     public ColorSensor cs3 = null;
     public ColorSensor cs4 = null;
 
+    private int cs1Val = 0;
+    private int cs2Val = 0;
+    private int cs3Val = 0;
+    private int cs4Val = 0;
+
+
     public TouchSensor limitSwitch = null;
 
     enum Side{
@@ -29,6 +33,13 @@ public class SpinnerSubsystem extends RunToPositionMotor{
     }
 
     public Side activeSide = Side.FORWARD;
+
+    public int csMinimum = 1000;
+    public int csCertainty = 500;
+
+    public SpinnerSubsystem(boolean isRed) {
+        setCSModes(isRed);
+    }
 
     public void initSpinner(HardwareMap ahwMap) {
         hwMap = ahwMap;
@@ -62,16 +73,16 @@ public class SpinnerSubsystem extends RunToPositionMotor{
     }
 
     public boolean checkSides() {
-        if (checkRed(cs1, 1600)) {
+        if (checkCone(cs1)) {
             activeSide = Side.FORWARD;
             return true;
-        } else if (checkRed(cs2, 1600)) {
+        } else if (checkCone(cs2)) {
             activeSide = Side.RIGHT;
             return true;
-        } else if (checkRed(cs3, 1600)) {
+        } else if (checkCone(cs3)) {
             activeSide = Side.BACK;
             return true;
-        } else if (checkRed(cs4, 1600)) {
+        } else if (checkCone(cs4)) {
             activeSide = Side.LEFT;
             return true;
         } else {
@@ -87,11 +98,33 @@ public class SpinnerSubsystem extends RunToPositionMotor{
         }
     }
 
-    public boolean checkRed(ColorSensor cs, int threshold) {
-        if (cs.red() > threshold) {
+    public boolean checkCone(ColorSensor cs) {
+        if (cs.red() > csMinimum && rangeOfExtremes(csCertainty)) {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public boolean rangeOfExtremes(int certainty){
+
+        int biggest = Math.max(cs1Val, Math.max(cs2Val, Math.max(cs3Val, cs4Val)));
+        int min = Math.min(cs1Val, Math.min(cs2Val, Math.min(cs3Val, cs4Val)));
+        if(biggest - min > certainty) return true;
+        return false;
+    }
+
+    public void setCSModes(boolean isRed) {
+        cs1Val = cs1.blue();
+        cs2Val = cs2.blue();
+        cs3Val = cs3.blue();
+        cs4Val = cs4.blue();
+
+        if(isRed){
+            cs1Val = cs1.red();
+            cs2Val = cs2.red();
+            cs3Val = cs3.red();
+            cs4Val = cs4.red();
         }
     }
 }

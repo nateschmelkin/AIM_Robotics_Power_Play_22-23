@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.subsystems.*;
 public class AIMTeleOp extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
-    Robot robot = new Robot();
+    Robot robot = new Robot(true);
 
 
 
