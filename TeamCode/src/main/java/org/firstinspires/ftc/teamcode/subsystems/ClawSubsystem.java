@@ -10,20 +10,27 @@ public class ClawSubsystem{
 
     public HardwareMap hwMap = null;
 
-    public Servo claw = null;
+    public Servo claw;
+    public Servo claw1;
 
     public void initClaw(HardwareMap ahwMap) {
         hwMap = ahwMap;
-
         claw = hwMap.get(Servo.class, "claw");
+        claw1 = hwMap.get(Servo.class, "claw1");
+        claw.setDirection(Servo.Direction.REVERSE);
+
+        claw1.setDirection(Servo.Direction.REVERSE);
+
     }
 
     public void grab() {
-        claw.setPosition(1);
+        claw.setPosition(.06);
+        claw1.setPosition(.72);
     }
 
     public void release() {
-        claw.setPosition(-1);
+        claw.setPosition(0);
+        claw1.setPosition(1);
     }
 
 }

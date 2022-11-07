@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.hardware.Robot;
+
 import java.lang.*;
 
 
@@ -13,8 +15,7 @@ import java.lang.*;
 public class MecanumDriveTester extends OpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
-    MecanumHardware mecanumHardware = new MecanumHardware();
-    boolean mechanisms = true;
+    Robot robot = new Robot(hardwareMap);
     double deadzone = .3;
     double maxSpeed = .8;
     double x = 0;
@@ -25,12 +26,9 @@ public class MecanumDriveTester extends OpMode {
 
     @Override
     public void init() {
-        mecanumHardware.init(hardwareMap, mechanisms, false);
+        robot.initRobot(hardwareMap);
         telemetry.addData("Status", "Initialized");
-        mecanumHardware.leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        mecanumHardware.rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        mecanumHardware.leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        mecanumHardware.rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        robot.drivebase.setZeroBehavior();
     }
 
 
@@ -47,37 +45,8 @@ public class MecanumDriveTester extends OpMode {
     @Override
     public void loop() {
 
-        double frontLeftPower;
-        double backLeftPower;
-        double frontRightPower;
-        double backRightPower;
-
-        if (Math.abs(-gamepad1.left_stick_y) > deadzone) {
-            x = -gamepad1.left_stick_y * .7;
-        } else {
-            x = 0;
-        }
-        if (Math.abs(gamepad1.left_stick_x) > deadzone) {
-            y = gamepad1.left_stick_x * .65;
-        } else {
-            y = 0;
-        }
-        if (Math.abs(gamepad1.right_stick_x) > deadzone) {
-            rx = gamepad1.right_stick_x * .85;
-        } else {
-            rx = 0;
-        }
-
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-        frontLeftPower = (y + x + rx) / denominator;
-        backLeftPower = (y - x - rx) / denominator;
-        frontRightPower = (y - x + rx) / denominator;
-        backRightPower = (y + x - rx) / denominator;
-
-        mecanumHardware.leftFront.setPower(frontLeftPower * maxSpeed);
-        mecanumHardware.leftRear.setPower(backLeftPower * maxSpeed);
-        mecanumHardware.rightFront.setPower(frontRightPower * maxSpeed);
-        mecanumHardware.rightRear.setPower(backRightPower * maxSpeed);
+        robot.drivebase.setVelos(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+        robot.drivebase.applyVelos();
     }
 
     @Override

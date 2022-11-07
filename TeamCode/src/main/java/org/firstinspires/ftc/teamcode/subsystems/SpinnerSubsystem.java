@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
@@ -22,10 +23,12 @@ public class SpinnerSubsystem extends RunToPositionMotor{
     private int cs3Val = 0;
     private int cs4Val = 0;
 
+    public boolean isRed = false;
+
 
     public TouchSensor limitSwitch = null;
 
-    enum Side{
+    public enum Side{
         FORWARD,
         RIGHT,
         LEFT,
@@ -34,56 +37,65 @@ public class SpinnerSubsystem extends RunToPositionMotor{
 
     public Side activeSide = Side.FORWARD;
 
-    public int csMinimum = 1000;
-    public int csCertainty = 500;
+    public int csMinimum = 325;
+    public int csCertainty = 200;
 
-    public SpinnerSubsystem(boolean isRed) {
-        setCSModes(isRed);
+    public SpinnerSubsystem() {
+
     }
 
     public void initSpinner(HardwareMap ahwMap) {
         hwMap = ahwMap;
 
         spinner = hwMap.get(DcMotorEx.class, "spinner");
+        spinner.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        spinner.setDirection(DcMotorSimple.Direction.REVERSE);
 
         cs1 = hwMap.get(ColorSensor.class, "cs1");
         cs2 = hwMap.get(ColorSensor.class, "cs2");
         cs3 = hwMap.get(ColorSensor.class, "cs3");
         cs4 = hwMap.get(ColorSensor.class, "cs4");
 
-        limitSwitch = hwMap.get(TouchSensor.class, "limitSwitch");
-
+//        limitSwitch = hwMap.get(TouchSensor.class, "limitSwitch");
+        setCSModes(isRed);
     }
 
-    public void setSide(SpinnerSubsystem.Side side) {
+
+    public void setSide(SpinnerSubsystem.Side side, double speed) {
         switch(side) {
             case FORWARD:
-                motorToPosition(spinner, 1, 10);
+                motorToPosition(spinner, speed, 0);
                 break;
             case RIGHT:
-                motorToPosition(spinner, 1, 30);
+                motorToPosition(spinner, speed, 2100);
                 break;
             case LEFT:
-                motorToPosition(spinner, 1, 50);
+                motorToPosition(spinner, speed, 730);
                 break;
             case BACK:
-                motorToPosition(spinner, 1, 40);
+                motorToPosition(spinner, speed, 1400);
                 break;
         }
     }
 
     public boolean checkSides() {
-        if (checkCone(cs1)) {
+//        if (checkConeBlue(cs1)) {
+//            activeSide = Side.FORWARD;
+//            return true;
+//        } else if (checkConeBlue(cs2)) {
+//            activeSide = Side.RIGHT;
+//            return true;
+//        } else if (checkConeBlue(cs3)) {
+//            activeSide = Side.BACK;
+//            return true;
+//        } else if (checkConeBlue(cs4)) {
+//            activeSide = Side.LEFT;
+//            return true;
+//        } else {
+//            return false;
+//        }
+        if (checkConeBlue(cs1)) {
             activeSide = Side.FORWARD;
-            return true;
-        } else if (checkCone(cs2)) {
-            activeSide = Side.RIGHT;
-            return true;
-        } else if (checkCone(cs3)) {
-            activeSide = Side.BACK;
-            return true;
-        } else if (checkCone(cs4)) {
-            activeSide = Side.LEFT;
             return true;
         } else {
             return false;
@@ -98,7 +110,7 @@ public class SpinnerSubsystem extends RunToPositionMotor{
         }
     }
 
-    public boolean checkCone(ColorSensor cs) {
+    public boolean checkConeRelative(ColorSensor cs) {
         if (cs.red() > csMinimum && rangeOfExtremes(csCertainty)) {
             return true;
         } else {
@@ -125,6 +137,22 @@ public class SpinnerSubsystem extends RunToPositionMotor{
             cs2Val = cs2.red();
             cs3Val = cs3.red();
             cs4Val = cs4.red();
+        }
+    }
+
+    public boolean checkConeRed(ColorSensor cs) {
+        if (cs.red() > csMinimum) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean checkConeBlue(ColorSensor cs) {
+        if (cs.blue() > csMinimum) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

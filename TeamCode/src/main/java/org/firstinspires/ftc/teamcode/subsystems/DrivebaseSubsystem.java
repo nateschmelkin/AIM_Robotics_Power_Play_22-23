@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
 
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class DrivebaseSubsystem{
@@ -11,10 +13,10 @@ public class DrivebaseSubsystem{
 
     public HardwareMap hwMap = null;
 
-    public DcMotorEx leftFront = null;
-    public DcMotorEx rightFront = null;
-    public DcMotorEx leftRear = null;
-    public DcMotorEx rightRear = null;
+    public DcMotorEx leftFront;
+    public DcMotorEx rightFront;
+    public DcMotorEx leftRear;
+    public DcMotorEx rightRear;
 
     double maxSpeed = .8;
     double drivebaseDeadzone = .3;
@@ -33,36 +35,37 @@ public class DrivebaseSubsystem{
 
     public void initDrivebase(HardwareMap ahwMap) {
         hwMap = ahwMap;
-
         leftFront = hwMap.get(DcMotorEx.class, "fld");
         rightFront = hwMap.get(DcMotorEx.class, "frd");
         leftRear = hwMap.get(DcMotorEx.class, "bld");
         rightRear = hwMap.get(DcMotorEx.class, "brd");
+        rightFront.setDirection(DcMotorEx.Direction.REVERSE);
+        rightRear.setDirection(DcMotorEx.Direction.REVERSE);
     }
 
-    public void setVelos() {
-        if (Math.abs(-gamepad1.left_stick_x) > drivebaseDeadzone) {
-            xVelo = -gamepad1.left_stick_x * strafingSense;
+    public void setVelos(double xLeftInput, double yLeftInput, double xRightInput) {
+        if (Math.abs(xLeftInput) > drivebaseDeadzone) {
+            xVelo = xLeftInput * strafingSense;
         } else {
             xVelo = 0;
         }
-        if (Math.abs(gamepad1.left_stick_y) > drivebaseDeadzone) {
-            yVelo = gamepad1.left_stick_y * strafingSense;
+        if (Math.abs(yLeftInput) > drivebaseDeadzone) {
+            yVelo = yLeftInput * strafingSense;
         } else {
             yVelo = 0;
         }
-        if (Math.abs(gamepad1.right_stick_x) > drivebaseDeadzone) {
-            rxVelo = gamepad1.right_stick_x * turningSense;
+        if (Math.abs(xRightInput) > drivebaseDeadzone) {
+            rxVelo = xRightInput * turningSense;
         } else {
             rxVelo = 0;
         }
 
         double denominator = Math.max(Math.abs(yVelo) + Math.abs(xVelo) + Math.abs(rxVelo), 1);
 
-        frontLeftPower = (yVelo + xVelo + rxVelo) / denominator;
+        frontLeftPower = (yVelo + xVelo - rxVelo) / denominator;
         backLeftPower = (yVelo - xVelo - rxVelo) / denominator;
         frontRightPower = (yVelo - xVelo + rxVelo) / denominator;
-        backRightPower = (yVelo + xVelo - rxVelo) / denominator;
+        backRightPower = (yVelo + xVelo + rxVelo) / denominator;
     }
 
     public void setZeroBehavior() {
@@ -79,4 +82,17 @@ public class DrivebaseSubsystem{
         rightRear.setPower(backRightPower * maxSpeed);
     }
 
+    public void strafe(double flpower, double frpower, double blpower, double brpower) {
+        leftFront.setPower(flpower);
+        leftRear.setPower(blpower);
+        rightFront.setPower(frpower);
+        rightRear.setPower(brpower);
+    }
+
+    public void stopMovement() {
+        leftFront.setPower(0);
+        leftRear.setPower(0);
+        rightFront.setPower(0);
+        rightRear.setPower(0);
+    }
 }

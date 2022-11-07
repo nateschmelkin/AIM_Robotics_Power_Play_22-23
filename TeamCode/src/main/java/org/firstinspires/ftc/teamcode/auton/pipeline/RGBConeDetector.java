@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.auton;
+package org.firstinspires.ftc.teamcode.auton.pipeline;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -26,9 +26,9 @@ public class RGBConeDetector extends OpenCvPipeline
     /*
      * The core values which define the location and size of the sample regions
      */
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(140,90);
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(115,0);
     static final int REGION_WIDTH = 40; // TODO Find actual size of box
-    static final int REGION_HEIGHT = 60; // TODO Find actual size of box
+    static final int REGION_HEIGHT = 25; // TODO Find actual size of box
 
     Point region1_pointA = new Point(
             REGION1_TOPLEFT_ANCHOR_POINT.x,
@@ -90,7 +90,7 @@ public class RGBConeDetector extends OpenCvPipeline
          */
         if(max == avgR) // Was it from region 1?
         {
-            face = 1; // Record our analysis
+            face = 3; // Record our analysis
             /*
              * Draw a rectangular frame on top of the chosen region.
              * Simply a visual aid. Serves no functional purpose.
@@ -104,7 +104,7 @@ public class RGBConeDetector extends OpenCvPipeline
         }
         else if(max == avgG) // Was it from region 2?
         {
-            face = 2; // Record our analysis
+            face = 1; // Record our analysis
             /*
              * Draw a rectangular frame on top of the chosen region.
              * Simply a visual aid. Serves no functional purpose.
@@ -118,7 +118,7 @@ public class RGBConeDetector extends OpenCvPipeline
         }
         else if(max == avgB) // Was it from region 3?
         {
-            face = 3; // Record our analysis
+            face = 2; // Record our analysis
 
             /*
              * Draw a rectangular frame on top of the chosen region.
