@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.hardware.Robot;
 public class CameraParkingAutoExtraScoreRED extends LinearOpMode {
     @Override
     public void runOpMode() {
-        Robot robot = new Robot(hardwareMap);
+        Robot robot = new Robot(hardwareMap, true);
 
         robot.initRobot(hardwareMap);
         robot.camera.initPipeline();

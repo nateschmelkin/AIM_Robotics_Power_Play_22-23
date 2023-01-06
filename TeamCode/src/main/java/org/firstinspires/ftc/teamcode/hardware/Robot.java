@@ -1,9 +1,8 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
-import org.checkerframework.checker.units.qual.C;
+import org.firstinspires.ftc.teamcode.subsystems.CSController;
 import org.firstinspires.ftc.teamcode.subsystems.CameraSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
 import org.firstinspires.ftc.teamcode.subsystems.DrivebaseSubsystem;
@@ -21,24 +20,26 @@ public class Robot {
     public DrivebaseSubsystem drivebase = null;
     public ClawSubsystem claw = null;
     public CameraSubsystem camera = null;
+    public CSController csController = null;
 
     public enum coneStates{
         NONE,
         READYFORPICKUP,
+        GRABBING,
         GRABBED,
-        DROPPING,
-        DROPPED
+        DROPPING
     }
 
     public coneStates activeConeState = coneStates.NONE;
 
-    public Robot(HardwareMap ahwMap) {
+    public Robot(HardwareMap ahwMap, boolean isRed) {
         hwMap = ahwMap;
-        spinner = new SpinnerSubsystem();
+        spinner = new SpinnerSubsystem(isRed);
         lift = new LiftSubsystem();
         drivebase = new DrivebaseSubsystem();
         claw = new ClawSubsystem();
         camera = new CameraSubsystem();
+        csController = new CSController(isRed);
     }
 
     public void initRobot(HardwareMap hwMap) {
@@ -47,6 +48,7 @@ public class Robot {
         drivebase.initDrivebase(hwMap);
         claw.initClaw(hwMap);
         camera.initCamera(hwMap);
+        csController.initCSController(hwMap);
     }
 }
 

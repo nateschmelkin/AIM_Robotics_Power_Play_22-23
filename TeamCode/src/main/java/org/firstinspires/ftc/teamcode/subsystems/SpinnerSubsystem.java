@@ -7,43 +7,38 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-public class SpinnerSubsystem extends RunToPositionMotor{
+import org.firstinspires.ftc.teamcode.util.RunToPositionMotorUtil;
 
-    public HardwareMap hwMap = null;
+public class SpinnerSubsystem extends RunToPositionMotorUtil {
 
-    public DcMotorEx spinner = null;
+    public HardwareMap hwMap = null; // Local access to hardware map
 
-    public ColorSensor cs1 = null;
-    public ColorSensor cs2 = null;
-    public ColorSensor cs3 = null;
-    public ColorSensor cs4 = null;
+    public DcMotorEx spinner = null; // Spinner
 
-    private int cs1Val = 0;
-    private int cs2Val = 0;
-    private int cs3Val = 0;
-    private int cs4Val = 0;
+    public ColorSensor cs1 = null; // 1st Color Sensor
+    public ColorSensor cs2 = null; // 2nd Color Sensor
 
-    public boolean isRed = false;
+    public int[] csVals; // Array to house cs values
 
+    public boolean isRed; // boolean to toggle red versus blue detection
 
-    public TouchSensor limitSwitch = null;
-
+    // An enumerator with values for all of the preset
+    // sides that the spinner goes to.
     public enum Side{
         FORWARD,
-        RIGHT,
-        LEFT,
         BACK
     }
 
-    public Side activeSide = Side.FORWARD;
+    public Side activeSide = Side.FORWARD; // Variable to track active side and it defaults to FORWARD
 
-    public int csMinimum = 325;
-    public int csCertainty = 200;
+    public int csMinimum = 325; // Minimum value cs must read to trigger true reading
 
-    public SpinnerSubsystem() {
-
+    // Constructor that sets the red/blue based on input
+    public SpinnerSubsystem(boolean isRedTeam) {
+        isRed = isRedTeam;
     }
 
+    // initSpinner initializes the spinner and its color sensors
     public void initSpinner(HardwareMap ahwMap) {
         hwMap = ahwMap;
 
@@ -53,24 +48,16 @@ public class SpinnerSubsystem extends RunToPositionMotor{
 
         cs1 = hwMap.get(ColorSensor.class, "cs1");
         cs2 = hwMap.get(ColorSensor.class, "cs2");
-        cs3 = hwMap.get(ColorSensor.class, "cs3");
-        cs4 = hwMap.get(ColorSensor.class, "cs4");
 
 //        limitSwitch = hwMap.get(TouchSensor.class, "limitSwitch");
         setCSModes(isRed);
     }
 
-
+    // setSide takes an Enum input and then uses a switch statement to match it to a motor position that corresponds to a side
     public void setSide(SpinnerSubsystem.Side side, double speed) {
         switch(side) {
             case FORWARD:
                 motorToPosition(spinner, speed, 0);
-                break;
-            case RIGHT:
-                motorToPosition(spinner, speed, 2100);
-                break;
-            case LEFT:
-                motorToPosition(spinner, speed, 730);
                 break;
             case BACK:
                 motorToPosition(spinner, speed, 1400);
@@ -78,81 +65,37 @@ public class SpinnerSubsystem extends RunToPositionMotor{
         }
     }
 
+    // checkSides checks all color sensors for a cone and then sets the active side accordingly
     public boolean checkSides() {
-//        if (checkConeBlue(cs1)) {
-//            activeSide = Side.FORWARD;
-//            return true;
-//        } else if (checkConeBlue(cs2)) {
-//            activeSide = Side.RIGHT;
-//            return true;
-//        } else if (checkConeBlue(cs3)) {
-//            activeSide = Side.BACK;
-//            return true;
-//        } else if (checkConeBlue(cs4)) {
-//            activeSide = Side.LEFT;
-//            return true;
-//        } else {
-//            return false;
-//        }
-        if (checkConeBlue(cs1)) {
+        if (checkCone(1)) {
             activeSide = Side.FORWARD;
             return true;
+        } else if (checkCone(2)) {
+            activeSide = Side.BACK;
+            return true;
         } else {
             return false;
         }
+
     }
 
-    public void resetSpinner() { // TODO WORK ON FUNCTION AS IT IS SIMPLY USED TO INCREASE ACCURACY BUT NOT 100% NECESSARY
-        if (!limitSwitch.isPressed()) {
-            spinner.setPower(1); // TODO Check direction
-        } else {
-            spinner.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        }
-    }
-
-    public boolean checkConeRelative(ColorSensor cs) {
-        if (cs.red() > csMinimum && rangeOfExtremes(csCertainty)) {
+    // checkCone checks the specified color sensor for a greater than threshold value
+    public boolean checkCone(int cs) {
+        if (csVals[cs] > csMinimum) {
             return true;
         } else {
             return false;
         }
     }
 
-    public boolean rangeOfExtremes(int certainty){
-
-        int biggest = Math.max(cs1Val, Math.max(cs2Val, Math.max(cs3Val, cs4Val)));
-        int min = Math.min(cs1Val, Math.min(cs2Val, Math.min(cs3Val, cs4Val)));
-        if(biggest - min > certainty) return true;
-        return false;
-    }
-
+    // setCSModes sets the color sensors to either detect red or blue
     public void setCSModes(boolean isRed) {
-        cs1Val = cs1.blue();
-        cs2Val = cs2.blue();
-        cs3Val = cs3.blue();
-        cs4Val = cs4.blue();
+        csVals[0] = cs1.blue();
+        csVals[1] = cs2.blue();
 
-        if(isRed){
-            cs1Val = cs1.red();
-            cs2Val = cs2.red();
-            cs3Val = cs3.red();
-            cs4Val = cs4.red();
-        }
-    }
-
-    public boolean checkConeRed(ColorSensor cs) {
-        if (cs.red() > csMinimum) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean checkConeBlue(ColorSensor cs) {
-        if (cs.blue() > csMinimum) {
-            return true;
-        } else {
-            return false;
+        if (isRed) {
+            csVals[0] = cs1.red();
+            csVals[1] = cs2.red();
         }
     }
 }

@@ -18,7 +18,7 @@ public class MecanumHardware {
     }
 
     /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap, boolean mechanisms, boolean auto) {
+    public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
         hwMap = ahwMap;
 

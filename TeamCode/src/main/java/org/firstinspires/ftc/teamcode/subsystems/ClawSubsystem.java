@@ -1,36 +1,42 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 public class ClawSubsystem{
 
-    public HardwareMap hwMap = null;
+    public HardwareMap hwMap = null; // Local access to hardware map
 
-    public Servo claw;
-    public Servo claw1;
+    public CRServo claw; // Servo hand one
+    public CRServo claw1; // Servo hand two
 
+    // initClaw initializes the servos and sets their directions
     public void initClaw(HardwareMap ahwMap) {
         hwMap = ahwMap;
-        claw = hwMap.get(Servo.class, "claw");
-        claw1 = hwMap.get(Servo.class, "claw1");
-        claw.setDirection(Servo.Direction.REVERSE);
+        claw = hwMap.get(CRServo.class, "claw");
+        claw1 = hwMap.get(CRServo.class, "claw1");
+        claw.setDirection(CRServo.Direction.REVERSE);
 
-        claw1.setDirection(Servo.Direction.REVERSE);
+        claw1.setDirection(CRServo.Direction.REVERSE);
 
     }
 
+    // grab turns on the claw servos
     public void grab() {
-        claw.setPosition(.06);
-        claw1.setPosition(.72);
+        claw.setPower(1);
+        claw1.setPower(1);
     }
 
+    // release reverses the claw servos
     public void release() {
-        claw.setPosition(0);
-        claw1.setPosition(1);
+        claw.setPower(-1);
+        claw1.setPower(-1);
+    }
+
+    // off stops the claw servos
+    public void off() {
+        claw.setPower(0);
+        claw1.setPower(0);
     }
 
 }

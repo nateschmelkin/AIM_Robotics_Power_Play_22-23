@@ -10,22 +10,25 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 public class CameraSubsystem {
 
-    public HardwareMap hwMap = null;
+    public HardwareMap hwMap = null; // Local access to hardware map
 
-    private OpenCvCamera camera;
-    WebcamName webcamName;
+    private OpenCvCamera camera; // Camera
 
-    public RGBConeDetector pipeline = null;
+    WebcamName webcamName; // Var for webcam name
 
-    public int coneFace;
+    public RGBConeDetector pipeline = null; // Pipeline for sleeve detection
 
+    public int coneFace; // Integer to represent the face of the cone sleeve
+
+    // initCamera initializes the camera and sets it up
     public void initCamera(HardwareMap ahwMap) {
         hwMap = ahwMap;
         // OpenCV webcam
-        webcamName = hwMap.get(WebcamName.class, "Webcam 1");
+        webcamName = hwMap.get(WebcamName.class, "Ray");
         camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName);
     }
 
+    // initPipeline sets active pipeline for camera
     public void initPipeline() {
         // OpenCV pipeline
         pipeline = new RGBConeDetector();
@@ -33,6 +36,7 @@ public class CameraSubsystem {
         camera.setPipeline(pipeline);
     }
 
+    // webcamStream turns on webcam
     public void webcamStream() {
         // Webcam Streaming
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -47,7 +51,7 @@ public class CameraSubsystem {
             }
         });
     }
-
+    // processImage retrieves the face the pipeline recognizes
     public void processImage() {
         coneFace = pipeline.face;
     }

@@ -1,9 +1,11 @@
-package org.firstinspires.ftc.teamcode.subsystems;
+package org.firstinspires.ftc.teamcode.util;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-public class RunToPositionMotor {
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+
+public class RunToPositionMotorUtil {
 
     public void motorToPosition(DcMotorEx motor, double speed, int position) {
         int target = position;
@@ -28,8 +30,8 @@ public class RunToPositionMotor {
         }
     }
 
-    public void dropPosition(DcMotorEx motor, double speed) {
-        int target = motor.getCurrentPosition() - 150;
+    public void dropPosition(DcMotorEx motor, double speed, int ticks) {
+        int target = motor.getCurrentPosition() - ticks;
         motor.setTargetPosition(target);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -42,6 +44,11 @@ public class RunToPositionMotor {
             motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
+    }
+
+    public boolean detectVoltageSpike(DcMotorEx motor, double currentThreshold) { // TODO: EXPERIMENTAL
+        if (motor.getCurrent(CurrentUnit.AMPS) > currentThreshold) return true;
+        return false;
     }
 
 }
