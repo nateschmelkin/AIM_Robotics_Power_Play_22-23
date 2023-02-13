@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.subsystems;
+package org.firstinspires.ftc.teamcode.hardware.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -13,11 +13,19 @@ public class LiftSubsystem extends RunToPositionMotorUtil {
 
     public DcMotorEx lift = null; // Lift motor
 
-    private int liftMaxHeight = 4000; // Max height of lift
+    private int liftMaxHeight = 4350; // Max height of lift
 
     private int liftMinimumHeight = 0; // Minimum height of lift
 
+    public final int lowTicks = 1200;
+    public final int mediumTicks = 2500;
+    public final int highTicks = 3920;
+    public final int groundTicks = 250;
+    public final int resetTicks = 500;
+    public final int pickupTicks = 0;
+
     private float liftSpeed = 1;
+    private int lastHeight = 0;
 
     // An enumerator with values for all of the preset
     // heights that the lift goes to. In addition has a custom
@@ -30,6 +38,7 @@ public class LiftSubsystem extends RunToPositionMotorUtil {
         RESET,
         PICKUP,
         CUSTOM
+        //BALLS -- Will
     }
 
     // Variable to access current lift height for arm automation
@@ -37,14 +46,13 @@ public class LiftSubsystem extends RunToPositionMotorUtil {
 
 
     // initLift initializes the lift motor and prepares its different behaviors
-    public void initLift(HardwareMap ahwMap) {
+    public void initLift(HardwareMap ahwMap, String name) {
         hwMap = ahwMap;
-        lift = hwMap.get(DcMotorEx.class, "lift");
+        lift = hwMap.get(DcMotorEx.class, name);
         lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         lift.setDirection(DcMotorSimple.Direction.REVERSE);
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        lift.setTargetPositionTolerance(10); TODO: EXPERIMENTAL
     }
 
     // setHeight takes in a Level and a speed and uses a switch statement to
@@ -76,39 +84,62 @@ public class LiftSubsystem extends RunToPositionMotorUtil {
     // userAdjustHeight takes in a power and sets the lift to that power
     // to manually adjust the height
     public void userAdjustHeight(double power) {
-        if (lift.getCurrentPosition() >= liftMaxHeight || lift.getCurrentPosition() <= liftMinimumHeight) {
-            lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            lift.setPower(power);
-        }
+//        if (lift.getCurrentPosition() <= liftMaxHeight && lift.getCurrentPosition() >= liftMinimumHeight) {
+//            lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            lift.setPower(power);
+//            setLastHeight();
+//        }
+        lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        lift.setPower(power);
     }
 
     private void setActiveLow() {
-        motorToPosition(lift, liftSpeed, 1550);
+        motorToPosition(lift, liftSpeed, lowTicks);
         activeHeight = Level.LOW;
     }
 
     private void setActiveMedium() {
-        motorToPosition(lift, liftSpeed, 2650);
+        motorToPosition(lift, liftSpeed, mediumTicks);
         activeHeight = Level.MEDIUM;
     }
 
     private void setActiveHigh() {
-        motorToPosition(lift, liftSpeed, 3800);
+        motorToPosition(lift, liftSpeed, highTicks);
         activeHeight = Level.HIGH;
     }
 
     private void setActiveReset() {
-        motorToPosition(lift, liftSpeed, 950);
+        motorToPosition(lift, liftSpeed, resetTicks);
         activeHeight = Level.RESET;
     }
 
     private void setActivePickup() {
-        motorToPosition(lift, liftSpeed, 0);
+        motorToPosition(lift, liftSpeed, pickupTicks);
         activeHeight = Level.PICKUP;
     }
 
     private void setActiveGround() {
-        motorToPosition(lift, liftSpeed, 300);
+        motorToPosition(lift, liftSpeed, groundTicks);
         activeHeight = Level.GROUND;
+    }
+
+    public void holdPos() {
+        activeHeight = Level.CUSTOM;
+        setLastHeight();
+        motorToPosition(lift, liftSpeed, lastHeight);
+    }
+
+    public void setLastHeightClamped() {
+        lastHeight = Math.max(liftMinimumHeight, Math.min(lift.getCurrentPosition(), liftMaxHeight)); // Clamping functionality to keep the lift holding withing defined range
+    }
+
+    public void setLastHeight() {
+        lastHeight = lift.getCurrentPosition();
+    }
+
+    public void setHeightAuto(int ticks) {
+        lift.setTargetPosition(ticks);
+        lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lift.setPower(1);
     }
 }

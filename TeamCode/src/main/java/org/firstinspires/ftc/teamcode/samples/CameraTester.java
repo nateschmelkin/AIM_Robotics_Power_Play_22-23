@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class CameraTester extends LinearOpMode {
     @Override
     public void runOpMode() {
-        Robot robot = new Robot(hardwareMap, true);
+        Robot robot = new Robot(hardwareMap);
 
         robot.camera.initPipeline();
         robot.camera.webcamStream();

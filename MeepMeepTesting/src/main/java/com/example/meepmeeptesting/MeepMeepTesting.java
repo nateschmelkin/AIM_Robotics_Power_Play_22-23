@@ -4,7 +4,6 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeBlueDark;
-import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeBlueLight;
 import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeRedDark;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
@@ -12,10 +11,10 @@ import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 public class MeepMeepTesting {
 
     public static double startXBlue = -36.0;
-    public static double startYBlue = 62.9;
+    public static double startYBlue = 63.3;
     public static double startAngleBlue = Math.toRadians(0);
 
-    public static double coneLifterOffset = 9;
+    public static double coneLifterOffset = 8;
     public static double approachDistanceOffset = 2.3;
 
     public static double parkingYBlue = 35;
@@ -37,10 +36,8 @@ public class MeepMeepTesting {
 
     public static Pose2d startPoseBlue = new Pose2d(startXBlue, startYBlue, startAngleBlue);
 
-
-
     public static double startXRed = 36.0;
-    public static double startYRed = -62.9;
+    public static double startYRed = -63.3;
     public static double startAngleRed = Math.toRadians(180);
 
     public static double parkingYRed = -35;
@@ -66,7 +63,7 @@ public class MeepMeepTesting {
         MeepMeep meepMeep = new MeepMeep(800);
 
         // Declare our first bot
-        RoadRunnerBotEntity complexPathBlue = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity coneCyclePathBlue = new DefaultBotBuilder(meepMeep)
                 // We set this bot to be blue
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setDimensions(15.3, 14.2)
@@ -119,7 +116,7 @@ public class MeepMeepTesting {
                                 .build()
                 );
 
-        RoadRunnerBotEntity complexPathRed = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity coneCyclePathRed = new DefaultBotBuilder(meepMeep)
                 // We set this bot to be blue
                 .setColorScheme(new ColorSchemeRedDark())
                 .setDimensions(15.3, 14.2)
@@ -172,38 +169,57 @@ public class MeepMeepTesting {
                                 .build()
                 );
 
-        RoadRunnerBotEntity redSleevePath = new DefaultBotBuilder(meepMeep)
-                // We set this bot to be blue
-                .setColorScheme(new ColorSchemeRedDark())
-                .setDimensions(15.3, 14.2)
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 13.8)
-                .followTrajectorySequence(drive ->
-                    drive.trajectorySequenceBuilder(new Pose2d(36, 62.9, Math.toRadians(270)))
-                            .strafeTo(new Vector2d(36, 35))
-                            .strafeTo(new Vector2d(61, 35))
-                            .build()
-                );
-
-        RoadRunnerBotEntity blueSleevePath = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity coneCycleHighPathBlue = new DefaultBotBuilder(meepMeep)
                 // We set this bot to be blue
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setDimensions(15.3, 14.2)
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 13.8)
+                .setConstraints(52, 52, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(36, 62.9, Math.toRadians(270)))
-                                .strafeTo(new Vector2d(36, 35))
-                                .build()
-                );
-
-        RoadRunnerBotEntity greenSleevePath = new DefaultBotBuilder(meepMeep)
-                // We set this bot to be blue
-                .setColorScheme(new ColorSchemeBlueLight())
-                .setDimensions(15.3, 14.2)
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 13.8)
-                .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(36, 62.9, Math.toRadians(270)))
-                                .strafeTo(new Vector2d(36, 35))
-                                .strafeTo(new Vector2d(13, 35))
+                        drive.trajectorySequenceBuilder(startPoseBlue)
+                                .strafeTo(new Vector2d(secondScorePoleXBlue - coneLifterOffset - approachDistanceOffset, secondScorePoleYBlue))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    // LIFT UP CODE
+                                })
+                                .waitSeconds(2)
+                                .strafeTo(new Vector2d(secondScorePoleXBlue - coneLifterOffset, secondScorePoleYBlue))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    // DROP CONE CODE
+                                })
+                                .waitSeconds(1)
+                                .strafeTo(new Vector2d(secondScorePoleXBlue - coneLifterOffset - approachDistanceOffset, secondScorePoleYBlue))
+                                .strafeTo(new Vector2d(startXBlue, stackYBlue))
+                                .strafeTo(new Vector2d(stackXBlue + coneLifterOffset, stackYBlue))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    // PICK UP CONE CODE
+                                })
+                                .waitSeconds(1.25)
+                                .splineToConstantHeading(new Vector2d(secondScorePoleXBlue + coneLifterOffset + approachDistanceOffset, secondScorePoleYBlue), Math.toRadians(270))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    // LIFT UP CODE
+                                })
+                                .waitSeconds(2)
+                                .strafeTo(new Vector2d(secondScorePoleXBlue + coneLifterOffset, secondScorePoleYBlue))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    // DROP CONE CODE
+                                })
+                                .waitSeconds(1)
+                                .splineToConstantHeading(new Vector2d(secondScorePoleXBlue + coneLifterOffset + approachDistanceOffset, stackYBlue), Math.toRadians(90))
+                                .strafeTo(new Vector2d(stackXBlue + coneLifterOffset, stackYBlue))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    // PICK UP CONE CODE
+                                })
+                                .waitSeconds(1.25)
+                                .splineToConstantHeading(new Vector2d(secondScorePoleXBlue + coneLifterOffset + approachDistanceOffset, secondScorePoleYBlue), Math.toRadians(270))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    // LIFT UP CODE
+                                })
+                                .waitSeconds(2)
+                                .strafeTo(new Vector2d(secondScorePoleXBlue + coneLifterOffset, secondScorePoleYBlue))
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                                    // DROP CONE CODE
+                                })
+                                .waitSeconds(1)
+                                .splineToConstantHeading(new Vector2d(secondScorePoleXBlue + coneLifterOffset + approachDistanceOffset, stackYBlue), Math.toRadians(90))
                                 .build()
                 );
 
@@ -212,11 +228,10 @@ public class MeepMeepTesting {
                 .setBackgroundAlpha(0.95f)
 
                 // Add both of our declared bot entities
-//                .addEntity(redSleevePath)
-//                .addEntity(blueSleevePath)
-//                .addEntity(greenSleevePath)
-                .addEntity(complexPathBlue)
-                .addEntity(complexPathRed)
+//                .addEntity(coneCyclePathBlue)
+//                .addEntity(coneCyclePathRed)
+                .addEntity(coneCyclePathBlue)
+                .addEntity(coneCyclePathRed)
                 .start();
     }
 }

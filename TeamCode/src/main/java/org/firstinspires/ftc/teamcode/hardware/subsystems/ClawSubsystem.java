@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.subsystems;
+package org.firstinspires.ftc.teamcode.hardware.subsystems;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,12 +11,10 @@ public class ClawSubsystem{
     public CRServo claw1; // Servo hand two
 
     // initClaw initializes the servos and sets their directions
-    public void initClaw(HardwareMap ahwMap) {
+    public void initClaw(HardwareMap ahwMap, String leftClaw, String rightClaw) {
         hwMap = ahwMap;
-        claw = hwMap.get(CRServo.class, "claw");
-        claw1 = hwMap.get(CRServo.class, "claw1");
-        claw.setDirection(CRServo.Direction.REVERSE);
-
+        claw = hwMap.get(CRServo.class, leftClaw);
+        claw1 = hwMap.get(CRServo.class, rightClaw);
         claw1.setDirection(CRServo.Direction.REVERSE);
 
     }

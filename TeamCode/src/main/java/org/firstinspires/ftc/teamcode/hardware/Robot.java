@@ -2,53 +2,70 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.subsystems.CSController;
-import org.firstinspires.ftc.teamcode.subsystems.CameraSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.ClawSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.DrivebaseSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.LiftSubsystem;
-import org.firstinspires.ftc.teamcode.subsystems.SpinnerSubsystem;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.CameraSubsystem;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.ClawSubsystem;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.DrivebaseSubsystem;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.LiftSubsystem;
+
+import org.firstinspires.ftc.teamcode.TeleOp.DriverPreset;
 
 public class Robot {
 
     public HardwareMap hwMap;
 
-    public double triggerDeadzone = .3;
+    public double gamepad1StickDeadzone;
+    public double gamepad2StickDeadzone;
 
-    public SpinnerSubsystem spinner = null;
-    public LiftSubsystem lift = null;
-    public DrivebaseSubsystem drivebase = null;
-    public ClawSubsystem claw = null;
-    public CameraSubsystem camera = null;
-    public CSController csController = null;
+    public DrivebaseSubsystem drivebase;
+    public LiftSubsystem frontLift;
+    public LiftSubsystem backLift;
+    public ClawSubsystem frontClaw;
+    public ClawSubsystem backClaw;
+    public CameraSubsystem camera;
 
-    public enum coneStates{
-        NONE,
-        READYFORPICKUP,
-        GRABBING,
-        GRABBED,
-        DROPPING
+    public enum frontLiftStates{
+        FRONTMOVING,
+        FRONTINPOS
     }
 
-    public coneStates activeConeState = coneStates.NONE;
+    public enum backLiftStates{
+        BACKMOVING,
+        BACKINPOS
+    }
 
-    public Robot(HardwareMap ahwMap, boolean isRed) {
+    public frontLiftStates frontLiftState = frontLiftStates.FRONTINPOS;
+    public backLiftStates backLiftState = backLiftStates.BACKINPOS;
+
+    public Robot(HardwareMap ahwMap) {
         hwMap = ahwMap;
-        spinner = new SpinnerSubsystem(isRed);
-        lift = new LiftSubsystem();
         drivebase = new DrivebaseSubsystem();
-        claw = new ClawSubsystem();
+        frontLift = new LiftSubsystem();
+        frontClaw = new ClawSubsystem();
+        backLift = new LiftSubsystem();
+        backClaw = new ClawSubsystem();
         camera = new CameraSubsystem();
-        csController = new CSController(isRed);
     }
 
     public void initRobot(HardwareMap hwMap) {
-        spinner.initSpinner(hwMap);
-        lift.initLift(hwMap);
         drivebase.initDrivebase(hwMap);
-        claw.initClaw(hwMap);
+        initLiftsClawsCam(hwMap);
+    }
+
+    public void setActivePresets(DriverPreset gamepad1Driver, DriverPreset gamepad2Driver) {
+        gamepad1StickDeadzone = gamepad1Driver.stickDeadzone;
+        drivebase.strafingSense = gamepad1Driver.strafeMultiplier;
+        drivebase.turningSense = gamepad1Driver.turnMultiplier;
+        drivebase.maxSpeed = gamepad1Driver.maxSpeedMultiplier;
+        gamepad2StickDeadzone = gamepad2Driver.stickDeadzone;
+    }
+
+
+    public void initLiftsClawsCam(HardwareMap hwMap) {
         camera.initCamera(hwMap);
-        csController.initCSController(hwMap);
+        frontLift.initLift(hwMap, "frontLift");
+        frontClaw.initClaw(hwMap, "frontLeftClaw", "frontRightClaw");
+        backLift.initLift(hwMap, "backLift");
+        backClaw.initClaw(hwMap, "backLeftClaw", "backRightClaw");
     }
 }
 

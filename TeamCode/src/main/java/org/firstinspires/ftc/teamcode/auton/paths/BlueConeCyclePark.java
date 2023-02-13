@@ -6,20 +6,19 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.hardware.Robot;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous(name="BlueConeCyclePark", group="Comp Autos")
 
 public class BlueConeCyclePark extends LinearOpMode {
 
-    private Robot robot = new Robot(hardwareMap, true);
+//    private Robot robot = new Robot(hardwareMap, true);
 
     private static double startX = -36.0;
-    private static double startY = 62.9;
+    private static double startY = 63.3;
     private static double startAngle = Math.toRadians(0);
 
-    private static double coneLifterOffset = 9;
+    private static double coneLifterOffset = 8;
     private static double approachDistanceOffset = 2.3;
 
     private static double parkingY = 35;
@@ -41,12 +40,13 @@ public class BlueConeCyclePark extends LinearOpMode {
 
     public static Pose2d startPose = new Pose2d(startX, startY, startAngle);
 
-    SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
     @Override
     public void runOpMode() {
 
-        robot.initRobot(hardwareMap);
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+
+//        robot.initRobot(hardwareMap);
 
         drive.setPoseEstimate(startPose); //Set drive to the starting position
 
@@ -110,11 +110,11 @@ public class BlueConeCyclePark extends LinearOpMode {
 
         while (opModeIsActive()) {
             drive.followTrajectorySequence(coneCycles);
-            if (robot.camera.coneFace == 2) {
-                drive.followTrajectorySequence(bluePath);
-            } else if (robot.camera.coneFace == 3) {
-                drive.followTrajectorySequence(greenPath);
-            }
+//            if (robot.camera.coneFace == 2) {
+//                drive.followTrajectorySequence(bluePath);
+//            } else if (robot.camera.coneFace == 3) {
+//                drive.followTrajectorySequence(greenPath);
+//            }
             break;
         }
     }

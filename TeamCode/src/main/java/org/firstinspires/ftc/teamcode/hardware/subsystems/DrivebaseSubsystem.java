@@ -1,15 +1,10 @@
-package org.firstinspires.ftc.teamcode.subsystems;
+package org.firstinspires.ftc.teamcode.hardware.subsystems;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
-
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class DrivebaseSubsystem{
-
 
     public HardwareMap hwMap = null; // Local access to hardware map
 
@@ -18,13 +13,10 @@ public class DrivebaseSubsystem{
     public DcMotorEx leftRear; // Back left motor
     public DcMotorEx rightRear; // Back right motor
 
-    public DcMotorEx[] activeMotorOrder; // List to access all motors
 
-    public double maxSpeed = .5; // Multiplier to clamp speed
-    public double drivebaseDeadzone = .15; // Deadzone for gamepad sticks
-
-    double strafingSense = .7; // Multiplier to clamp strafing speed
-    double turningSense = .45; // Multiplier to clamp turning speed
+    public double strafingSense; // Multiplier to clamp strafing speed
+    public double turningSense; // Multiplier to clamp turning speed
+    public double maxSpeed; // Multiplier to clamp speed
 
     double frontLeftPower; // Local access to flp
     double backLeftPower; // Local access to blp
@@ -49,30 +41,30 @@ public class DrivebaseSubsystem{
 
     // setZeroBehavior sets zero power behavior for all drivebase motors
     public void setZeroBehavior() {
-        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightRear.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     // setVelos inputs gamepad stick values and then converts them into motor powers
-    public void setVelos(double xLeftInput, double yLeftInput, double xRightInput) {
+    public void setVelos(double xLeftInput, double yLeftInput, double xRightInput, double deadzone) {
 
         double xVelo;
         double yVelo;
         double rxVelo;
 
-        if (Math.abs(xLeftInput) > drivebaseDeadzone) {
+        if (Math.abs(xLeftInput) > deadzone) {
             xVelo = xLeftInput * strafingSense;
         } else {
             xVelo = 0;
         }
-        if (Math.abs(yLeftInput) > drivebaseDeadzone) {
+        if (Math.abs(yLeftInput) > deadzone) {
             yVelo = yLeftInput * strafingSense;
         } else {
             yVelo = 0;
         }
-        if (Math.abs(xRightInput) > drivebaseDeadzone) {
+        if (Math.abs(xRightInput) > deadzone) {
             rxVelo = xRightInput * turningSense;
         } else {
             rxVelo = 0;
@@ -94,36 +86,4 @@ public class DrivebaseSubsystem{
         rightRear.setPower(backRightPower * maxSpeed);
     }
 
-    //
-    //
-    // EXPERIMENTAL TELEOP CAPABILITIES
-    //
-    //
-
-    public void setFront(int howManySides) { // Motors go in clockwise order
-        activeMotorOrder[0 + howManySides] = leftFront;
-        activeMotorOrder[1 + howManySides] = rightFront;
-        activeMotorOrder[2 + howManySides] = rightRear;
-        activeMotorOrder[3 + howManySides] = leftRear;
-    }
-
-    //
-    //
-    // DEPRECIATED AUTO CAPABILITIES
-    //
-    //
-
-    public void strafe(double flpower, double frpower, double blpower, double brpower) {
-        leftFront.setPower(flpower);
-        leftRear.setPower(blpower);
-        rightFront.setPower(frpower);
-        rightRear.setPower(brpower);
-    }
-
-    public void stopMovement() {
-        leftFront.setPower(0);
-        leftRear.setPower(0);
-        rightFront.setPower(0);
-        rightRear.setPower(0);
-    }
 }
