@@ -50,61 +50,61 @@ public class BlueConeHighCyclePark extends LinearOpMode {
         TrajectorySequence coneCycles = drive.trajectorySequenceBuilder(startPose)
                 .lineToLinearHeading(new Pose2d(scorePoleX - coneLifterOffset - approachDistanceOffset, scorePoleY + .75, Math.toRadians(-1.7)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    robot.frontLift.setHeightAuto(robot.frontLift.highTicks + 80); // SET HIGH
+                    robot.frontLift.setHeightAuto(robot.frontLift.highInches); // SET HIGH
                 })
                 .waitSeconds(2.2)
                 .strafeTo(new Vector2d(scorePoleX - coneLifterOffset + 1.3, scorePoleY + .75))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    robot.frontLift.setHeightAuto(robot.frontLift.highTicks - 400); // SET HIGH
+                    robot.frontLift.setHeightAuto(robot.frontLift.highInches - 1); // SET HIGH
                     robot.frontClaw.release(); // DROP CONE
                 })
                 .waitSeconds(1.4)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     robot.frontClaw.off(); // CLAW OFF AND RESET HEIGHT
-                    robot.backLift.setHeightAuto(1200);
+                    robot.backLift.setHeightAuto(6);
                 })
                 .strafeTo(new Vector2d(scorePoleX - coneLifterOffset - approachDistanceOffset, scorePoleY + .75))
                 .strafeTo(new Vector2d(startX, stackY))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    robot.frontLift.setHeightAuto(robot.frontLift.pickupTicks);
+                    robot.frontLift.setHeightAuto(robot.frontLift.pickupInches);
                 })
                 .strafeTo(new Vector2d(stackX + coneLifterOffset, stackY))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    robot.backLift.setHeightAuto(480);
+                    robot.backLift.setHeightAuto(4);
                     robot.backClaw.grab(); // PICKUP CONE
                 })
                 .waitSeconds(1.4)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     robot.backClaw.off();
-                    robot.backLift.setHeightAuto(1500);
+                    robot.backLift.setHeightAuto(6);
                 })
                 .waitSeconds(.5)
                 .strafeTo(new Vector2d(scorePoleX + coneLifterOffset + approachDistanceOffset + 4.3, stackY))
                 .strafeTo(new Vector2d(scorePoleX + coneLifterOffset + approachDistanceOffset + 4.3, scorePoleY + .75))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    robot.backLift.setHeightAuto(robot.frontLift.highTicks + 80); // SET HIGH
+                    robot.backLift.setHeightAuto(robot.frontLift.highInches); // SET HIGH
                 })
                 .waitSeconds(1.5)
                 .strafeTo(new Vector2d(scorePoleX + coneLifterOffset + approachDistanceOffset - .6, scorePoleY + .75))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    robot.backLift.setHeightAuto(robot.frontLift.highTicks - 600); // SET HIGH
+                    robot.backLift.setHeightAuto(robot.frontLift.highInches - 1); // SET HIGH
                     robot.backClaw.release(); // DROP CONE
                 })
                 .waitSeconds(1)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    robot.backLift.setHeightAuto(1000);
+                    robot.backLift.setHeightAuto(6);
                 })
                 .strafeTo(new Vector2d(scorePoleX + coneLifterOffset + approachDistanceOffset + 4.3, scorePoleY + .75))
                 .strafeTo(new Vector2d(scorePoleX + coneLifterOffset + approachDistanceOffset + 4.3, stackY))
                 .strafeTo(new Vector2d(stackX + coneLifterOffset, stackY))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    robot.backLift.setHeightAuto(280);
+                    robot.backLift.setHeightAuto(3);
                     robot.backClaw.grab(); // PICKUP CONE
                 })
                 .waitSeconds(.7)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     robot.backClaw.off();
-                    robot.backLift.setHeightAuto(1500);
+                    robot.backLift.setHeightAuto(6);
                 })
                 .waitSeconds(.35)
                 .build();
@@ -134,8 +134,8 @@ public class BlueConeHighCyclePark extends LinearOpMode {
             } else if (robot.camera.coneFace == 2) {
                 drive.followTrajectorySequence(greenPath);
             }
-            robot.frontLift.setHeightAuto(robot.frontLift.pickupTicks); // SET PICKUP
-            robot.backLift.setHeightAuto(robot.backLift.pickupTicks); // SET PICKUP
+            robot.frontLift.setHeightAuto(robot.frontLift.pickupInches); // SET PICKUP
+            robot.backLift.setHeightAuto(robot.backLift.pickupInches); // SET PICKUP
             sleep(2000);
             break;
         }

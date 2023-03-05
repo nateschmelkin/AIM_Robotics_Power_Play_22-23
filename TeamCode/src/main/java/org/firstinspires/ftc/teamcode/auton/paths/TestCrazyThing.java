@@ -50,12 +50,12 @@ public class TestCrazyThing extends LinearOpMode {
         TrajectorySequence coneCycles = drive.trajectorySequenceBuilder(startPose)
                 .lineToLinearHeading(new Pose2d(scorePoleX - coneLifterOffset - approachDistanceOffset, scorePoleY, Math.toRadians(-1.7)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    robot.frontLift.setHeightAuto(robot.frontLift.highTicks + 80); // SET HIGH
+                    robot.frontLift.setHeightAuto(robot.frontLift.highInches + 80); // SET HIGH
                 })
                 .waitSeconds(2.2)
                 .strafeTo(new Vector2d(scorePoleX - coneLifterOffset + 1.2, scorePoleY))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    robot.frontLift.setHeightAuto(robot.frontLift.highTicks - 400); // SET HIGH
+                    robot.frontLift.setHeightAuto(robot.frontLift.highInches - 400); // SET HIGH
                     robot.frontClaw.release(); // DROP CONE
                 })
                 .waitSeconds(1.4)
@@ -66,7 +66,7 @@ public class TestCrazyThing extends LinearOpMode {
                 .strafeTo(new Vector2d(scorePoleX - coneLifterOffset - approachDistanceOffset, scorePoleY))
                 .strafeTo(new Vector2d(startX, stackY))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    robot.frontLift.setHeightAuto(robot.frontLift.pickupTicks);
+                    robot.frontLift.setHeightAuto(robot.frontLift.pickupInches);
                 })
                 .strafeTo(new Vector2d(stackX + coneLifterOffset, stackY))
                 //
@@ -79,13 +79,13 @@ public class TestCrazyThing extends LinearOpMode {
                 .waitSeconds(1.4)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     robot.backClaw.off();
-                    robot.backLift.setHeightAuto(robot.backLift.highTicks + 80);
+                    robot.backLift.setHeightAuto(robot.backLift.highInches + 80);
                 })
                 .waitSeconds(.5)
                 .lineToSplineHeading(new Pose2d(scorePoleX + 2, scorePoleY + coneLifterOffset + approachDistanceOffset, Math.toRadians(90)))
                 .strafeTo(new Vector2d(scorePoleX + 2, scorePoleY + coneLifterOffset))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    robot.backLift.setHeightAuto(robot.backLift.highTicks - 400); // SET HIGH
+                    robot.backLift.setHeightAuto(robot.backLift.highInches - 400); // SET HIGH
                     robot.backClaw.release(); // DROP CONE
                 })
                 .waitSeconds(1.4)
@@ -105,13 +105,13 @@ public class TestCrazyThing extends LinearOpMode {
                 .waitSeconds(1.4)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     robot.backClaw.off();
-                    robot.backLift.setHeightAuto(robot.backLift.highTicks + 80);
+                    robot.backLift.setHeightAuto(robot.backLift.highInches + 80);
                 })
                 .waitSeconds(.5)
                 .lineToSplineHeading(new Pose2d(scorePoleX + 2, scorePoleY + coneLifterOffset + approachDistanceOffset, Math.toRadians(90)))
                 .strafeTo(new Vector2d(scorePoleX + 2, scorePoleY + coneLifterOffset))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    robot.backLift.setHeightAuto(robot.backLift.highTicks - 400); // SET HIGH
+                    robot.backLift.setHeightAuto(robot.backLift.highInches - 400); // SET HIGH
                     robot.backClaw.release(); // DROP CONE
                 })
                 .waitSeconds(1.4)
@@ -131,13 +131,13 @@ public class TestCrazyThing extends LinearOpMode {
                 .waitSeconds(1.4)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     robot.backClaw.off();
-                    robot.backLift.setHeightAuto(robot.backLift.highTicks + 80);
+                    robot.backLift.setHeightAuto(robot.backLift.highInches + 80);
                 })
                 .waitSeconds(.5)
                 .lineToSplineHeading(new Pose2d(scorePoleX + 2, scorePoleY + coneLifterOffset + approachDistanceOffset, Math.toRadians(90)))
                 .strafeTo(new Vector2d(scorePoleX + 2, scorePoleY + coneLifterOffset))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    robot.backLift.setHeightAuto(robot.backLift.highTicks - 400); // SET HIGH
+                    robot.backLift.setHeightAuto(robot.backLift.highInches - 400); // SET HIGH
                     robot.backClaw.release(); // DROP CONE
                 })
                 .waitSeconds(1.4)

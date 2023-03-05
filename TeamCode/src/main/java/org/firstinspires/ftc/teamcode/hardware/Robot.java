@@ -13,8 +13,8 @@ public class Robot {
 
     public HardwareMap hwMap;
 
-    public double gamepad1StickDeadzone;
-    public double gamepad2StickDeadzone;
+    public DriverPreset activeDriver1;
+    public DriverPreset activeDriver2;
 
     public DrivebaseSubsystem drivebase;
     public LiftSubsystem frontLift;
@@ -51,12 +51,10 @@ public class Robot {
         initLiftsClawsCam(hwMap);
     }
 
-    public void setActivePresets(DriverPreset gamepad1Driver, DriverPreset gamepad2Driver) {
-        gamepad1StickDeadzone = gamepad1Driver.stickDeadzone;
-        drivebase.strafingSense = gamepad1Driver.strafeMultiplier;
-        drivebase.turningSense = gamepad1Driver.turnMultiplier;
-        drivebase.maxSpeed = gamepad1Driver.maxSpeedMultiplier;
-        gamepad2StickDeadzone = gamepad2Driver.stickDeadzone;
+    public void setActiveDrivers(DriverPreset gamepad1Driver, DriverPreset gamepad2Driver) {
+        activeDriver1 = gamepad1Driver;
+        activeDriver2 = gamepad2Driver;
+        drivebase.setActiveDrivingPresets(gamepad1Driver);
     }
 
 

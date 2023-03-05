@@ -73,8 +73,8 @@ public class DetectFacePark extends LinearOpMode {
             } else if (robot.camera.coneFace == 3) {
                 drive.followTrajectorySequence(bluePath);
             }
-            robot.frontLift.setHeightAuto(robot.frontLift.pickupTicks); // SET PICKUP
-            robot.backLift.setHeightAuto(robot.backLift.pickupTicks); // SET PICKUP
+            robot.frontLift.setHeightAuto(robot.frontLift.pickupInches); // SET PICKUP
+            robot.backLift.setHeightAuto(robot.backLift.pickupInches); // SET PICKUP
             sleep(2000);
             break;
         }

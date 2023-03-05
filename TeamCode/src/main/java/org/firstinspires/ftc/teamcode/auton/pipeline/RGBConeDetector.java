@@ -13,7 +13,7 @@ public class RGBConeDetector extends OpenCvPipeline
     /*
      * A variable to define the positions
      */
-    public int face = 1;
+    public int face = 3;
 
     /*
      * Some color constants
@@ -26,9 +26,9 @@ public class RGBConeDetector extends OpenCvPipeline
     /*
      * The core values which define the location and size of the sample regions
      */
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(128,10);
-    static final int REGION_WIDTH = 35; // TODO Find actual size of box
-    static final int REGION_HEIGHT = 65; // TODO Find actual size of box
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(158,15);
+    static final int REGION_WIDTH = 36; // TODO Find actual size of box
+    static final int REGION_HEIGHT = 70; // TODO Find actual size of box
 
     Point region1_pointA = new Point(
             REGION1_TOPLEFT_ANCHOR_POINT.x,

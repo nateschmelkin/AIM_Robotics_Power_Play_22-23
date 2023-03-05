@@ -10,228 +10,216 @@ import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
 public class MeepMeepTesting {
 
-    public static double startXBlue = -36.0;
-    public static double startYBlue = 63.3;
-    public static double startAngleBlue = Math.toRadians(0);
+    public static double startX = 35;
+    public static double startY = -62.75;
+    private static double startAngle = Math.toRadians(180);
 
-    public static double coneLifterOffset = 8;
-    public static double approachDistanceOffset = 2.3;
+    public static double coneLifterOffset = 6.457;
+    public static double coneLifterPythagoreanOffset = 6.4;
 
-    public static double parkingYBlue = 35;
-    public static double parkingRedXBlue = -12;
-    public static double parkingBlueXBlue = -36;
-    public static double parkingGreenXBlue = -60;
+    private static double parkingY = -14.5;
+    private static double parkingRedX = 12;
+    private static double parkingGreenX = 35;
+    private static double parkingBlueX = 66.5;
 
-    public static double stackXBlue = -70;
-    public static double stackYBlue = 12;
+    public static double stackFrontLiftPickupAngle = Math.toRadians(170);
+    public static double stackBackLiftPickupAngle = Math.toRadians(-10);
+    public static double stackAdjustment = Math.toRadians(4);
 
-    public static double firstScorePoleXBlue = -48;
-    public static double firstScorePoleYBlue = 24;
+    public static double stackX = 71.3;
+    public static double stackY = -14.8;
 
-    public static double secondScorePoleXBlue = -24;
-    public static double secondScorePoleYBlue = 0;
+    public static double scorePoleX = 24;
+    public static double scorePoleY = 0;
+    public static double scorePoleFrontLiftAngle = Math.toRadians(315);
+    public static double scorePoleBackLiftAngle = Math.toRadians(135);
+    public static double scoreAdjustment = Math.toRadians(6);
+    public static double scorePoleWait = 0.2;
 
-    public static double thirdScorePoleXBlue = -24;
-    public static double thirdScorePoleYBlue = 24;
+    public static double scoreDropDistance = 2.4;
 
-    public static Pose2d startPoseBlue = new Pose2d(startXBlue, startYBlue, startAngleBlue);
+    public static double coneStack1Height = 9;
+    public static double coneStack2Height = 7.75;
+    public static double coneStack3Height = 6.5;
 
-    public static double startXRed = 36.0;
-    public static double startYRed = -63.3;
-    public static double startAngleRed = Math.toRadians(180);
+    public static double prepSpotX = 33.5;
+    public static double prepSpotY = -15;
 
-    public static double parkingYRed = -35;
-    public static double parkingRedXRed = 12;
-    public static double parkingBlueXRed = 36;
-    public static double parkingGreenXRed = 60;
+    public static double pickupTime = 0.42;
+    public static double dropTime = 0.55;
 
-    public static double stackXRed = 70;
-    public static double stackYRed = -12;
-
-    public static double firstScorePoleXRed = 48;
-    public static double firstScorePoleYRed = -24;
-
-    public static double secondScorePoleXRed = 24;
-    public static double secondScorePoleYRed = 0;
-
-    public static double thirdScorePoleXRed = 24;
-    public static double thirdScorePoleYRed = -24;
-
-    public static Pose2d startPoseRed = new Pose2d(startXRed, startYRed, startAngleRed);
+    public static Pose2d startPose = new Pose2d(startX, startY, startAngle);
+    public static Pose2d leftStartPose = new Pose2d(-startX, startY, startAngle);
 
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 
-        // Declare our first bot
-        RoadRunnerBotEntity coneCyclePathBlue = new DefaultBotBuilder(meepMeep)
+
+        RoadRunnerBotEntity coneCyclePathRight = new DefaultBotBuilder(meepMeep)
                 // We set this bot to be blue
                 .setColorScheme(new ColorSchemeBlueDark())
-                .setDimensions(15.3, 14.2)
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .setDimensions(16.06, 15.67)
+                .setConstraints(46, 46, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(startPoseBlue)
-                                .strafeTo(new Vector2d(firstScorePoleXBlue + coneLifterOffset + approachDistanceOffset, firstScorePoleYBlue))
+                        drive.trajectorySequenceBuilder(startPose)
+                                .strafeTo(new Vector2d(startX, scorePoleY))
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // LIFT UP CODE
+
                                 })
-                                .waitSeconds(2)
-                                .strafeTo(new Vector2d(firstScorePoleXBlue + coneLifterOffset, firstScorePoleYBlue))
+                                .waitSeconds(2.5)
+                                .forward(2)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // DROP CONE CODE
+
                                 })
-                                .waitSeconds(1)
-                                .strafeTo(new Vector2d(startXBlue, stackYBlue))
-                                .strafeTo(new Vector2d(stackXBlue + coneLifterOffset, stackYBlue))
+                                .waitSeconds(dropTime)
+                                .UNSTABLE_addTemporalMarkerOffset(.5, () -> {
+
+                                })
+                                .back(2)
+                                .splineToConstantHeading(new Vector2d(startX, stackY + 1), Math.toRadians(90))
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // PICK UP CONE CODE
+
                                 })
-                                .waitSeconds(1.25)
-                                .splineToConstantHeading(new Vector2d(secondScorePoleXBlue + coneLifterOffset + approachDistanceOffset, secondScorePoleYBlue), Math.toRadians(270))
+                                .strafeTo(new Vector2d(stackX - coneLifterOffset - .75, stackY))
+                                //
+                                // STACK #1
+                                //
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // LIFT UP CODE
+
                                 })
-                                .waitSeconds(2)
-                                .strafeTo(new Vector2d(secondScorePoleXBlue + coneLifterOffset, secondScorePoleYBlue))
+                                .waitSeconds(pickupTime)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // DROP CONE CODE
+
                                 })
-                                .waitSeconds(1)
-                                .splineToConstantHeading(new Vector2d(secondScorePoleXBlue + coneLifterOffset + approachDistanceOffset, stackYBlue), Math.toRadians(90))
-                                .strafeTo(new Vector2d(stackXBlue + coneLifterOffset, stackYBlue))
+                                .strafeTo(new Vector2d(prepSpotX, prepSpotY))
+                                .turn(Math.toRadians(127))
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // PICK UP CONE CODE
+
                                 })
-                                .waitSeconds(1.25)
-                                .splineToConstantHeading(new Vector2d(thirdScorePoleXBlue + coneLifterOffset + approachDistanceOffset, thirdScorePoleYBlue), Math.toRadians(-270))
+                                .strafeTo(new Vector2d(scorePoleX + coneLifterPythagoreanOffset + .5, scorePoleY - coneLifterPythagoreanOffset))
+                                .waitSeconds(scorePoleWait)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // LIFT UP CODE
+
                                 })
-                                .waitSeconds(2)
-                                .strafeTo(new Vector2d(thirdScorePoleXBlue + coneLifterOffset, thirdScorePoleYBlue))
+                                .waitSeconds(dropTime)
+                                .UNSTABLE_addTemporalMarkerOffset(.5, () -> {
+
+                                })
+                                .lineToSplineHeading(new Pose2d(prepSpotX, prepSpotY, stackBackLiftPickupAngle)) // ADDED ADJUSTMENT HERE
+                                .strafeTo(new Vector2d(stackX - coneLifterOffset, stackY))
+                                //
+                                // STACK #2
+                                //
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // DROP CONE CODE
+
                                 })
-                                .waitSeconds(1)
-                                .splineToConstantHeading(new Vector2d(parkingRedXBlue, parkingYBlue), Math.toRadians(90))
+                                .waitSeconds(pickupTime)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+
+                                })
+                                .strafeTo(new Vector2d(prepSpotX, prepSpotY))
+                                .turn(Math.toRadians(127))
+                                .UNSTABLE_addTemporalMarkerOffset(-.3, () -> {
+
+                                })
+                                .strafeTo(new Vector2d(scorePoleX + coneLifterPythagoreanOffset + .5, scorePoleY - coneLifterPythagoreanOffset))
+                                .waitSeconds(scorePoleWait)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+
+                                })
+                                .waitSeconds(dropTime)
+                                .UNSTABLE_addTemporalMarkerOffset(0.8, () -> {
+
+                                })
+                                .lineToSplineHeading(new Pose2d(prepSpotX, prepSpotY, stackFrontLiftPickupAngle))
                                 .build()
                 );
 
-        RoadRunnerBotEntity coneCyclePathRed = new DefaultBotBuilder(meepMeep)
+        RoadRunnerBotEntity coneCyclePathLeft = new DefaultBotBuilder(meepMeep)
                 // We set this bot to be blue
                 .setColorScheme(new ColorSchemeRedDark())
-                .setDimensions(15.3, 14.2)
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .setDimensions(16.06, 15.67)
+                .setConstraints(46, 46, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(startPoseRed)
-                                .strafeTo(new Vector2d(firstScorePoleXRed - coneLifterOffset - approachDistanceOffset, firstScorePoleYRed))
+                        drive.trajectorySequenceBuilder(leftStartPose)
+                                .strafeTo(new Vector2d(-startX, scorePoleY))
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // LIFT UP CODE
-                                })
-                                .waitSeconds(2)
-                                .strafeTo(new Vector2d(firstScorePoleXRed - coneLifterOffset, firstScorePoleYRed))
-                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // DROP CONE CODE
-                                })
-                                .waitSeconds(1)
-                                .strafeTo(new Vector2d(startXRed, stackYRed))
-                                .strafeTo(new Vector2d(stackXRed - coneLifterOffset, stackYRed))
-                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // PICK UP CONE CODE
-                                })
-                                .waitSeconds(1.25)
-                                .splineToConstantHeading(new Vector2d(secondScorePoleXRed - coneLifterOffset - approachDistanceOffset, secondScorePoleYRed), Math.toRadians(-270))
-                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // LIFT UP CODE
-                                })
-                                .waitSeconds(2)
-                                .strafeTo(new Vector2d(secondScorePoleXRed - coneLifterOffset, secondScorePoleYRed))
-                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // DROP CONE CODE
-                                })
-                                .waitSeconds(1)
-                                .splineToConstantHeading(new Vector2d(secondScorePoleXRed - coneLifterOffset - approachDistanceOffset, stackYRed), Math.toRadians(-90))
-                                .strafeTo(new Vector2d(stackXRed - coneLifterOffset, stackYRed))
-                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // PICK UP CONE CODE
-                                })
-                                .waitSeconds(1.25)
-                                .splineToConstantHeading(new Vector2d(thirdScorePoleXRed - coneLifterOffset - approachDistanceOffset, thirdScorePoleYRed), Math.toRadians(270))
-                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // LIFT UP CODE
-                                })
-                                .waitSeconds(2)
-                                .strafeTo(new Vector2d(thirdScorePoleXRed - coneLifterOffset, thirdScorePoleYRed))
-                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // DROP CONE CODE
-                                })
-                                .waitSeconds(1)
-                                .splineToConstantHeading(new Vector2d(parkingRedXRed, parkingYRed), Math.toRadians(-90))
-                                .build()
-                );
 
-        RoadRunnerBotEntity coneCycleHighPathBlue = new DefaultBotBuilder(meepMeep)
-                // We set this bot to be blue
-                .setColorScheme(new ColorSchemeBlueDark())
-                .setDimensions(15.3, 14.2)
-                .setConstraints(52, 52, Math.toRadians(180), Math.toRadians(180), 15)
-                .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(startPoseBlue)
-                                .strafeTo(new Vector2d(secondScorePoleXBlue - coneLifterOffset - approachDistanceOffset, secondScorePoleYBlue))
-                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // LIFT UP CODE
                                 })
-                                .waitSeconds(2)
-                                .strafeTo(new Vector2d(secondScorePoleXBlue - coneLifterOffset, secondScorePoleYBlue))
+                                .waitSeconds(2.5)
+                                .back(2)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // DROP CONE CODE
+
                                 })
-                                .waitSeconds(1)
-                                .strafeTo(new Vector2d(secondScorePoleXBlue - coneLifterOffset - approachDistanceOffset, secondScorePoleYBlue))
-                                .strafeTo(new Vector2d(startXBlue, stackYBlue))
-                                .strafeTo(new Vector2d(stackXBlue + coneLifterOffset, stackYBlue))
+                                .waitSeconds(dropTime)
+                                .UNSTABLE_addTemporalMarkerOffset(.5, () -> {
+
+                                })
+                                .forward(2)
+                                .splineToConstantHeading(new Vector2d(-startX, stackY + 1), Math.toRadians(-90))
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // PICK UP CONE CODE
+
                                 })
-                                .waitSeconds(1.25)
-                                .splineToConstantHeading(new Vector2d(secondScorePoleXBlue + coneLifterOffset + approachDistanceOffset, secondScorePoleYBlue), Math.toRadians(270))
+                                .strafeTo(new Vector2d(-stackX + coneLifterOffset - .75, stackY))
+                                //
+                                // STACK #1
+                                //
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // LIFT UP CODE
+
                                 })
-                                .waitSeconds(2)
-                                .strafeTo(new Vector2d(secondScorePoleXBlue + coneLifterOffset, secondScorePoleYBlue))
+                                .waitSeconds(pickupTime)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // DROP CONE CODE
+
                                 })
-                                .waitSeconds(1)
-                                .splineToConstantHeading(new Vector2d(secondScorePoleXBlue + coneLifterOffset + approachDistanceOffset, stackYBlue), Math.toRadians(90))
-                                .strafeTo(new Vector2d(stackXBlue + coneLifterOffset, stackYBlue))
+                                .strafeTo(new Vector2d(-prepSpotX, prepSpotY))
+                                .turn(-Math.toRadians(127))
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // PICK UP CONE CODE
+
                                 })
-                                .waitSeconds(1.25)
-                                .splineToConstantHeading(new Vector2d(secondScorePoleXBlue + coneLifterOffset + approachDistanceOffset, secondScorePoleYBlue), Math.toRadians(270))
+                                .strafeTo(new Vector2d(-scorePoleX - coneLifterPythagoreanOffset - .5, scorePoleY - coneLifterPythagoreanOffset))
+                                .waitSeconds(scorePoleWait)
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // LIFT UP CODE
+
                                 })
-                                .waitSeconds(2)
-                                .strafeTo(new Vector2d(secondScorePoleXBlue + coneLifterOffset, secondScorePoleYBlue))
+                                .waitSeconds(dropTime)
+                                .UNSTABLE_addTemporalMarkerOffset(.5, () -> {
+
+                                })
+                                .lineToSplineHeading(new Pose2d(-prepSpotX, prepSpotY, stackBackLiftPickupAngle)) // ADDED ADJUSTMENT HERE
+                                .strafeTo(new Vector2d(-stackX + coneLifterOffset, stackY))
+                                //
+                                // STACK #2
+                                //
                                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                                    // DROP CONE CODE
+
                                 })
-                                .waitSeconds(1)
-                                .splineToConstantHeading(new Vector2d(secondScorePoleXBlue + coneLifterOffset + approachDistanceOffset, stackYBlue), Math.toRadians(90))
+                                .waitSeconds(pickupTime)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+
+                                })
+                                .strafeTo(new Vector2d(-prepSpotX, prepSpotY))
+                                .turn(-Math.toRadians(127))
+                                .UNSTABLE_addTemporalMarkerOffset(-.3, () -> {
+
+                                })
+                                .strafeTo(new Vector2d(-scorePoleX - coneLifterPythagoreanOffset - .5, scorePoleY - coneLifterPythagoreanOffset))
+                                .waitSeconds(scorePoleWait)
+                                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+
+                                })
+                                .waitSeconds(dropTime)
+                                .UNSTABLE_addTemporalMarkerOffset(0.8, () -> {
+
+                                })
+                                .lineToSplineHeading(new Pose2d(-prepSpotX, prepSpotY, stackFrontLiftPickupAngle))
                                 .build()
                 );
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
-
-                // Add both of our declared bot entities
-//                .addEntity(coneCyclePathBlue)
-//                .addEntity(coneCyclePathRed)
-                .addEntity(coneCyclePathBlue)
-                .addEntity(coneCyclePathRed)
+                .addEntity(coneCyclePathRight)
+                .addEntity(coneCyclePathLeft)
                 .start();
     }
 }

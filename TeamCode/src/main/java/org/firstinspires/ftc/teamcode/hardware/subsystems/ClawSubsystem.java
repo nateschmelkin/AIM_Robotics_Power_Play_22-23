@@ -37,4 +37,9 @@ public class ClawSubsystem{
         claw1.setPower(0);
     }
 
+    public void drawPower() {
+        claw.setPower(-.01);
+        claw1.setPower(-.01);
+    }
+
 }

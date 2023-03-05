@@ -49,7 +49,7 @@ public class SingleScorePark extends LinearOpMode {
         TrajectorySequence parkingScore = drive.trajectorySequenceBuilder(startPose)
                 .lineToLinearHeading(new Pose2d(scorePoleX + coneLifterOffset + approachDistanceOffset, scorePoleY, Math.toRadians(-2)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    robot.backLift.setHeightAuto(robot.backLift.highTicks); // SET HIGH
+                    robot.backLift.setHeightAuto(robot.backLift.highInches); // SET HIGH
                 })
                 .waitSeconds(2.5)
                 .strafeTo(new Vector2d(scorePoleX + coneLifterOffset, scorePoleY))
@@ -85,8 +85,8 @@ public class SingleScorePark extends LinearOpMode {
             } else if (robot.camera.coneFace == 3) {
                 drive.followTrajectorySequence(bluePath);
             }
-            robot.frontLift.setHeightAuto(robot.frontLift.pickupTicks); // SET PICKUP
-            robot.backLift.setHeightAuto(robot.backLift.pickupTicks); // SET PICKUP
+            robot.frontLift.setHeightAuto(robot.frontLift.pickupInches); // SET PICKUP
+            robot.backLift.setHeightAuto(robot.backLift.pickupInches); // SET PICKUP
             sleep(2000);
             break;
         }
