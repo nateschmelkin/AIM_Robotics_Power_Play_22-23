@@ -23,12 +23,12 @@ public class OnePlusTwoRight extends LinearOpMode {
     public static double coneLifterPythagoreanOffset = 5.5;
 
     private static double parkingY = -14.5;
-    private static double parkingRedX = 66.5;
+    private static double parkingRedX = 12;
     private static double parkingGreenX = 35;
-    private static double parkingBlueX = 12;
+    private static double parkingBlueX = 66.5;
 
     public static double stackFrontLiftPickupAngle = Math.toRadians(195);
-    public static double stackBackLiftPickupAngle = Math.toRadians(-10);
+    public static double stackBackLiftPickupAngle = Math.toRadians(0);
     public static double stackAdjustment = Math.toRadians(4);
     public static double endAngle = Math.toRadians(170);
 
@@ -49,7 +49,7 @@ public class OnePlusTwoRight extends LinearOpMode {
     public static double coneStack3Height = 6.5;
 
     public static double prepSpotX = 33.5;
-    public static double prepSpotY = -14.3;
+    public static double prepSpotY = -13.9;
 
     public static double pickupTime = 0.55;
     public static double dropTime = 0.6;
@@ -72,13 +72,13 @@ public class OnePlusTwoRight extends LinearOpMode {
                 //
                 // PRELOAD
                 //
-                .strafeTo(new Vector2d(scorePoleX + coneLifterOffset + 4, scorePoleY + 1.5))
+                .strafeTo(new Vector2d(scorePoleX + coneLifterOffset + 4, scorePoleY + .5))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     robot.frontLift.setHeightAuto(robot.frontLift.highInches); // SET HIGH
                     robot.frontClaw.drawPower();
                 })
                 .waitSeconds(2.3)
-                .forward(2.6)
+                .forward(5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     robot.frontLift.setHeightAuto(robot.frontLift.highInches - scoreDropDistance); // SET HIGH
                     robot.frontClaw.release(); // DROP CONE
@@ -111,7 +111,7 @@ public class OnePlusTwoRight extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     robot.backLift.setHeightAuto(robot.backLift.highInches + 1); // SET HIGH
                 })
-                .strafeTo(new Vector2d(scorePoleX + coneLifterPythagoreanOffset + 1.75, scorePoleY - coneLifterPythagoreanOffset))
+                .strafeTo(new Vector2d(scorePoleX + coneLifterPythagoreanOffset - .75, scorePoleY - coneLifterPythagoreanOffset))
                 .back(.5)
 //                .forward(5)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
@@ -138,12 +138,12 @@ public class OnePlusTwoRight extends LinearOpMode {
                     robot.frontClaw.off();
                 })
                 .strafeTo(new Vector2d(prepSpotX, prepSpotY))
-                .turn(Math.toRadians(127))
+                .turn(Math.toRadians(125))
                 .UNSTABLE_addTemporalMarkerOffset(-.3, () -> {
                     robot.frontLift.setHeightAuto(robot.frontLift.highInches + 1); // SET HIGH
                 })
-                .strafeTo(new Vector2d(scorePoleX + coneLifterPythagoreanOffset + 1.75, scorePoleY - coneLifterPythagoreanOffset))
-                .forward(.5)
+                .strafeTo(new Vector2d(scorePoleX + coneLifterPythagoreanOffset - .75, scorePoleY - coneLifterPythagoreanOffset))
+                .forward(1.3)
                 .waitSeconds(scorePoleWait)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     robot.frontLift.setHeightAuto(robot.frontLift.highInches - scoreDropDistance); // SET HIGH
@@ -157,16 +157,16 @@ public class OnePlusTwoRight extends LinearOpMode {
                 .lineToSplineHeading(new Pose2d(prepSpotX, stackY, endAngle))
                 .build();
 
-        TrajectorySequence bluePath = drive.trajectorySequenceBuilder(cycling.end())
-                .strafeTo(new Vector2d(parkingBlueX, stackY))
-                .strafeTo(new Vector2d(parkingBlueX, parkingY))
+        TrajectorySequence redPath = drive.trajectorySequenceBuilder(cycling.end())
+                .strafeTo(new Vector2d(parkingRedX, stackY))
+                .strafeTo(new Vector2d(parkingRedX, parkingY))
                 .build();
 
         TrajectorySequence greenPath = drive.trajectorySequenceBuilder(cycling.end())
                 .strafeTo(new Vector2d(parkingGreenX, parkingY))
                 .build();
 
-        TrajectorySequence redPath = drive.trajectorySequenceBuilder(cycling.end())
+        TrajectorySequence bluePath = drive.trajectorySequenceBuilder(cycling.end())
                 .strafeTo(new Vector2d(stackX - coneLifterOffset - .75, stackY))
 //                //
 //                // STACK #3
@@ -180,7 +180,7 @@ public class OnePlusTwoRight extends LinearOpMode {
                     robot.backLift.setHeightAuto(robot.backLift.resetInches); // SET HIGH
                     robot.backClaw.off();
                 })
-                .strafeTo(new Vector2d(parkingRedX, parkingY))
+                .strafeTo(new Vector2d(parkingBlueX, parkingY))
                 .build();
 
 
