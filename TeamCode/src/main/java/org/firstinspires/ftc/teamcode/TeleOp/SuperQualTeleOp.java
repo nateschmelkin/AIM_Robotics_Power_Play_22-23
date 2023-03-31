@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -47,7 +48,7 @@ public class SuperQualTeleOp extends OpMode {
 
 
         // Sets and then applies velos to drivebase based on gamepad 1 stick inputs.
-        robot.drivebase.setVelos(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+        robot.drivebase.setVelos(new Pose2d(-gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x));
         robot.drivebase.applyVelos();
 
         if (gamepad2.a || gamepad2.right_trigger > robot.activeDriver2.triggerDeadzone) {

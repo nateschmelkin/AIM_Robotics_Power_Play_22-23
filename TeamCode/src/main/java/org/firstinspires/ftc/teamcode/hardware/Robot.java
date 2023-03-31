@@ -2,12 +2,11 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.TeleOp.DriverPreset;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.CameraSubsystem;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.ClawSubsystem;
-import org.firstinspires.ftc.teamcode.hardware.subsystems.DrivebaseSubsystem;
 import org.firstinspires.ftc.teamcode.hardware.subsystems.LiftSubsystem;
-
-import org.firstinspires.ftc.teamcode.TeleOp.DriverPreset;
+import org.firstinspires.ftc.teamcode.hardware.subsystems.RRDrivebaseSubsystem;
 
 public class Robot {
 
@@ -16,7 +15,7 @@ public class Robot {
     public DriverPreset activeDriver1;
     public DriverPreset activeDriver2;
 
-    public DrivebaseSubsystem drivebase;
+    public RRDrivebaseSubsystem drivebase;
     public LiftSubsystem frontLift;
     public LiftSubsystem backLift;
     public ClawSubsystem frontClaw;
@@ -38,7 +37,7 @@ public class Robot {
 
     public Robot(HardwareMap ahwMap) {
         hwMap = ahwMap;
-        drivebase = new DrivebaseSubsystem();
+        drivebase = new RRDrivebaseSubsystem(hwMap);
         frontLift = new LiftSubsystem();
         frontClaw = new ClawSubsystem();
         backLift = new LiftSubsystem();
@@ -47,14 +46,14 @@ public class Robot {
     }
 
     public void initRobot(HardwareMap hwMap) {
-        drivebase.initDrivebase(hwMap);
+//        drivebase.initDrivebase(hwMap);
         initLiftsClawsCam(hwMap);
     }
 
     public void setActiveDrivers(DriverPreset gamepad1Driver, DriverPreset gamepad2Driver) {
         activeDriver1 = gamepad1Driver;
         activeDriver2 = gamepad2Driver;
-        drivebase.setActiveDrivingPresets(gamepad1Driver);
+//        drivebase.setActiveDrivingPresets(gamepad1Driver);
     }
 
 

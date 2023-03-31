@@ -105,4 +105,19 @@ public class DriveConstants {
         // see https://docs.google.com/document/d/1tyWrXDfMidwYyP_5H4mZyVgaEswhOC35gvdmP-V-5hA/edit#heading=h.61g9ixenznbx
         return 32767 / ticksPerSecond;
     }
+
+    public static double OPTIMAL_VOLTAGE = 13.3;
+    public static double FRONT_LEFT_DRIFT_MULTIPLIER = .99;
+    public static double FRONT_RIGHT_DRIFT_MULTIPLIER = .98;
+    public static double BACK_LEFT_DRIFT_MULTIPLIER = .98;
+    public static double BACK_RIGHT_DRIFT_MULTIPLIER = .99;
+
+    public static double STRAFE_MULTIPLIER = 1.1;
+
+    public static int EXPONENT_MODIFIER = 2;
+
+    public static double VX_WEIGHT = .8;
+    public static double VY_WEIGHT = .8;
+    public static double VRX_WEIGHT = .8;
+
 }
