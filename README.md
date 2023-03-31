@@ -1,40 +1,22 @@
-[//]: # (# Road Runner Quickstart)
-
-[//]: # ()
-[//]: # (An example FTC project using [Road Runner]&#40;https://github.com/acmerobotics/road-runner&#41;. **Note:** Road Runner is in alpha and many of its APIs are incubating.)
-
-[//]: # ()
-[//]: # (## Installation)
-
-[//]: # ()
-[//]: # (For more detailed instructions on getting Road Runner setup in your own project, see the [Road Runner README]&#40;https://github.com/acmerobotics/road-runner#core&#41;.)
-
-[//]: # ()
-[//]: # (1. Download or clone this repo with `git clone https://github.com/acmerobotics/road-runner-quickstart`.)
-
-[//]: # ()
-[//]: # (1. Open the project in Android Studio and build `TeamCode` like any other `ftc_app` project.)
-
-[//]: # ()
-[//]: # (1. If you have trouble with multidex, enable proguard by changing `useProguard` to `true` in `build.common.gradle`.)
-
-[//]: # ()
-[//]: # (## Documentation)
-
-[//]: # ()
-[//]: # (Check out the new [online quickstart documentation]&#40;https://acme-robotics.gitbook.io/road-runner/quickstart/introduction&#41;.)
-
 # AIM Robotics FTC Project
 
-This repository contains the code for AIM Robotics' 2023-2024.
+This repository contains the code for AIM Robotics' 2022-2023.
 
+## Downloading Android Studio
+
+To develop and run the code, you need to download Android Studio. You can download the latest version of Android Studio from the official website [here](https://developer.android.com/studio).
+
+After downloading Android Studio, follow the installation instructions for your operating system.
 
 ## Downloading the Repository
 
-To download the repository, click on the green "Code" button on the GitHub page and select "Download ZIP" to download the repository as a ZIP file.
+Create a new directory for the repository on your local machine.
 
-Alternatively, you can copy the repository URL and use the `git clone` command to clone the repository to your local machine.
+To download the global repository, click on the green "Code" button on the GitHub page and select "Download ZIP" to download it as a ZIP file.
 
+Alternatively, you can copy the repository URL and use the `git clone https://github.com/nateschmelkin/AIM_Robotics_Power_Play_22-23.git` command in the new folder to clone the repository to your local machine.
+
+Make sure that the repositry is now in the local directory.
 
 ## Connecting to the Global Repository
 
