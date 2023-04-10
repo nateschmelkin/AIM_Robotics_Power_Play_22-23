@@ -106,18 +106,18 @@ public class DriveConstants {
         return 32767 / ticksPerSecond;
     }
 
-    public static double OPTIMAL_VOLTAGE = 13.3;
-    public static double FRONT_LEFT_DRIFT_MULTIPLIER = .99;
-    public static double FRONT_RIGHT_DRIFT_MULTIPLIER = .98;
-    public static double BACK_LEFT_DRIFT_MULTIPLIER = .98;
-    public static double BACK_RIGHT_DRIFT_MULTIPLIER = .99;
+    public final static double OPTIMAL_VOLTAGE = 13.3;
+    public final static double FRONT_LEFT_DRIFT_MULTIPLIER = .99;
+    public final static double FRONT_RIGHT_DRIFT_MULTIPLIER = .98;
+    public final static double BACK_LEFT_DRIFT_MULTIPLIER = .98;
+    public final static double BACK_RIGHT_DRIFT_MULTIPLIER = .99;
 
-    public static double STRAFE_MULTIPLIER = 1.1;
+    public final static double STRAFE_MULTIPLIER = 1.1;
 
-    public static int EXPONENT_MODIFIER = 2;
+    public final static int EXPONENT_MODIFIER = 2;
 
-    public static double VX_WEIGHT = .8;
-    public static double VY_WEIGHT = .8;
-    public static double VRX_WEIGHT = .8;
+    public final static double VX_WEIGHT = .8;
+    public final static double VY_WEIGHT = .8;
+    public final static double VRX_WEIGHT = .8;
 
 }
