@@ -24,10 +24,10 @@ public class Claws extends Mechanism {
 
     @Override
     public void loop(Gamepad gamepad) {
-        if (gamepad.a || gamepad.right_trigger > GamepadConstants.GAMEPAD1_TRIGGER_DEADZONE) {
+        if (gamepad.a || gamepad.right_trigger > GamepadConstants.GAMEPAD2_TRIGGER_DEADZONE) {
             frontIntake.intake(1);
             backIntake.intake(1);
-        } else if (gamepad.b || gamepad.left_trigger > GamepadConstants.GAMEPAD1_TRIGGER_DEADZONE) {
+        } else if (gamepad.b || gamepad.left_trigger > GamepadConstants.GAMEPAD2_TRIGGER_DEADZONE) {
             frontIntake.outtake(1);
             backIntake.outtake(1);
         } else {
